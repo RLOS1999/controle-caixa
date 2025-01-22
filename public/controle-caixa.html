@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Caixa Comercial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            background: linear-gradient(to right, red, orange);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            width: 80%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px auto;
+            background-color: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: orange;
+            color: black;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 90%;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        select {
+            width: 90%;
+            padding: 5px;
+        }
+
+        input[type="checkbox"] {
+            transform: scale(1.5);
+        }
+
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: darkred;
+        }
+
+        .obs-container {
+            position: relative;
+        }
+
+        .obs-input {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 200px;
+            padding: 5px;
+            border: 1px solid gray;
+            border-radius: 5px;
+            background-color: white;
+            z-index: 10;
+        }
+
+        .obs-input:focus {
+            border-color: red;
+        }
+
+        .obs-container:hover .obs-input {
+            display: block;
+        }
+
+        .obs-container.has-obs > input:first-child {
+            border-color: red;
+        }
+
+        /* Botão Voltar para tela inicial */
+        .btn-voltar {
+            margin-top: 0;
+            margin-bottom: 0;
+            background-color: #aaa;
+            color: black;
+        }
+        .btn-voltar:hover {
+            background-color: #888;
+        }
+    </style>
+</head>
+<body>
+    <!-- Botão para voltar à página inicial -->
+    <button class="btn-voltar" onclick="location.href='index.html'">Voltar</button>
+
+    <h1>Controle de Caixa Comercial</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>AUTOZONER</th>
+                <th>CLIENTE</th>
+                <th>PAGAMENTO</th>
+                <th>TROCO</th>
+                <th>TOTAL</th>
+                <th>MOTOBOY</th>
+                <th>PAGO</th>
+            </tr>
+        </thead>
+        <tbody id="caixaTable">
+            <!-- As linhas serão inseridas via JavaScript -->
+        </tbody>
+    </table>
+
+    <button onclick="clearTable()">Limpar Tudo</button>
+
+    <script>
+        // === Carrega dados salvos no localStorage ao carregar a página ===
+        document.addEventListener('DOMContentLoaded', loadData);
+
+        // === Captura a tecla Enter para adicionar nova linha ===
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                addRow();
+            }
+        });
+
+        // Função para criar uma nova linha e adicionar no tbody
+        function addRow(rowData = {}) {
+            // rowData é opcional; se fornecido, usamos para preencher os campos (para carregar do localStorage).
+            
+            const table = document.getElementById('caixaTable');
+            const newRow = document.createElement('tr');
+
+            // Montamos o innerHTML da nova linha
+            newRow.innerHTML = `
+                <td>
+                    <input 
+                        type="text" 
+                        placeholder="Nome do Autozoner" 
+                        value="${rowData.autozoner || ''}" 
+                        oninput="saveData()" 
+                    >
+                </td>
+                <td>
+                    <div class="obs-container">
+                        <input 
+                            type="text" 
+                            placeholder="Nome do Cliente" 
+                            value="${rowData.cliente || ''}" 
+                            oninput="checkObs(this); saveData();" 
+                        >
+                        <input 
+                            type="text" 
+                            class="obs-input" 
+                            placeholder="Observação" 
+                            value="${rowData.obs || ''}" 
+                            oninput="markObs(this); saveData();" 
+                        >
+                    </div>
+                </td>
+                <td>
+                    <select onchange="saveData()">
+                        <option value="dinheiro" ${rowData.pagamento === 'dinheiro' ? 'selected' : ''}>Dinheiro</option>
+                        <option value="cartao"   ${rowData.pagamento === 'cartao'   ? 'selected' : ''}>Cartão</option>
+                        <option value="pix"      ${rowData.pagamento === 'pix'      ? 'selected' : ''}>PIX</option>
+                    </select>
+                </td>
+                <td>
+                    <input 
+                        type="number" 
+                        placeholder="R$0,00" 
+                        step="0.01" 
+                        value="${rowData.troco || ''}" 
+                        oninput="saveData()"
+                    >
+                </td>
+                <td>
+                    <input 
+                        type="number" 
+                        placeholder="R$0,00" 
+                        step="0.01" 
+                        value="${rowData.total || ''}" 
+                        oninput="saveData()"
+                    >
+                </td>
+                <td>
+                    <input 
+                        type="text" 
+                        placeholder="Nome do Motoboy" 
+                        value="${rowData.motoboy || ''}" 
+                        oninput="saveData()"
+                    >
+                </td>
+                <td>
+                    <input 
+                        type="checkbox" 
+                        ${rowData.pago ? 'checked' : ''} 
+                        onclick="saveData()"
+                    >
+                </td>
+            `;
+
+            table.appendChild(newRow);
+
+            // Verifica se há observação para destacar o campo
+            const obsContainer = newRow.querySelector('.obs-container');
+            const obsInput = newRow.querySelector('.obs-input');
+            if (obsInput.value.trim() !== '') {
+                obsContainer.classList.add('has-obs');
+            }
+        }
+
+        // Função que salva todos os dados da tabela no localStorage
+        function saveData() {
+            const tableRows = document.querySelectorAll('#caixaTable tr');
+            const data = [];
+
+            tableRows.forEach(row => {
+                // Pega todos os elementos de input/select
+                const inputs = row.querySelectorAll('input, select');
+                const rowData = {
+                    autozoner: inputs[0].value,
+                    cliente:   inputs[1].value,
+                    obs:       inputs[2].value, // obs-input
+                    pagamento: inputs[3].value, // select
+                    troco:     inputs[4].value,
+                    total:     inputs[5].value,
+                    motoboy:   inputs[6].value,
+                    pago:      inputs[7].checked
+                };
+                data.push(rowData);
+            });
+
+            localStorage.setItem('caixaData', JSON.stringify(data));
+        }
+
+        // Função que carrega os dados do localStorage, se existirem
+        function loadData() {
+            const savedData = localStorage.getItem('caixaData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                // Limpa a tabela antes de recarregar
+                const table = document.getElementById('caixaTable');
+                table.innerHTML = '';
+                // Para cada objeto no array, cria uma nova linha
+                data.forEach(rowData => {
+                    addRow(rowData);
+                });
+            } else {
+                // Se não existir nada, cria uma linha inicial
+                addRow();
+            }
+        }
+
+        // Função que limpa a tabela e o localStorage
+        function clearTable() {
+            const table = document.getElementById('caixaTable');
+            table.innerHTML = '';
+            localStorage.removeItem('caixaData');
+            // Adiciona uma nova linha vazia após limpar tudo
+            addRow();
+        }
+
+        // Controla visual da observação
+        function markObs(obsInput) {
+            const container = obsInput.closest('.obs-container');
+            if (obsInput.value.trim() !== '') {
+                container.classList.add('has-obs');
+            } else {
+                container.classList.remove('has-obs');
+            }
+        }
+
+        function checkObs(clientInput) {
+            const container = clientInput.closest('.obs-container');
+            const obsInput = container.querySelector('.obs-input');
+            if (obsInput.value.trim() !== '') {
+                container.classList.add('has-obs');
+            } else {
+                container.classList.remove('has-obs');
+            }
+        }
+    </script>
+</body>
+</html>
