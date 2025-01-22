@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Controle de Caixa Comercial</title>
+  <style>
+    /* Layout de fundo */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, red, orange);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    /* Título */
+    h1 {
+      color: white;
+      font-weight: bold;
+      margin-bottom: 50px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+
+    /* Container dos botões/teclas */
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Estilo base para botões */
+    button {
+      width: 200px;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    /* Tecla do controle */
+    .btn-controle {
+      background-color: white;
+      color: red;
+    }
+    .btn-controle:hover {
+      background-color: #eee;
+    }
+
+    /* Botão de sair (opcional) */
+    .btn-sair {
+      background-color: #900;
+      color: white;
+    }
+    .btn-sair:hover {
+      background-color: #c00;
+    }
+  </style>
+</head>
+<body>
+  <h1>Controle de Caixa Comercial</h1>
+
+  <div class="button-container">
+    <!-- Tecla do controle que chama controle-caixa.html -->
+    <button class="btn-controle" id="teclaDoControle">
+      Tecla do Controle
+    </button>
+
+    <!-- Botão opcional para sair -->
+    <button class="btn-sair" onclick="window.close()">
+      Sair
+    </button>
+  </div>
+
+  <script>
+    // Ao clicar na tecla, redirecionar para "controle-caixa.html"
+    document.getElementById('teclaDoControle').addEventListener('click', function() {
+      window.location.href = 'controle-caixa.html';
+    });
+  </script>
+</body>
+</html>
