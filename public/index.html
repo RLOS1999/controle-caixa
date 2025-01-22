@@ -45,7 +45,7 @@
       transition: background-color 0.2s ease;
     }
 
-    /* Tecla do controle */
+    /* Botão para ir ao Controle de Caixa */
     .btn-controle {
       background-color: white;
       color: red;
@@ -68,9 +68,9 @@
   <h1>Controle de Caixa Comercial</h1>
 
   <div class="button-container">
-    <!-- Tecla do controle que chama controle-caixa.html -->
-    <button class="btn-controle" id="teclaDoControle">
-      Tecla do Controle
+    <!-- Botão que chama controle-caixa.html -->
+    <button class="btn-controle" id="btnControleCaixa">
+      Controle de Caixa
     </button>
 
     <!-- Botão opcional para sair -->
@@ -80,8 +80,8 @@
   </div>
 
   <script>
-    // Ao clicar na tecla, redirecionar para "controle-caixa.html"
-    document.getElementById('teclaDoControle').addEventListener('click', function() {
+    // Ao clicar no botão, redirecionar para "controle-caixa.html"
+    document.getElementById('btnControleCaixa').addEventListener('click', function() {
       window.location.href = 'controle-caixa.html';
     });
   </script>
