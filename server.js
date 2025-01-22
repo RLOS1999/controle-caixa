@@ -1,29 +1,17 @@
 const express = require('express');
-const http = require('http');
-const { Server } = require('socket.io');
-
+const path = require('path');
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server);
 
-app.use(express.static('public')); // Define a pasta pública
+// Supondo que sua pasta "público" seja onde estão os arquivos
+// (ideal renomear para "public" sem acento, mas funciona com acento se você tiver cuidado)
+app.use(express.static('público'));
 
-io.on('connection', (socket) => {
-    console.log('Novo usuário conectado:', socket.id);
-
-    socket.on('update-table', (data) => {
-        socket.broadcast.emit('update-table', data); // Sincroniza alterações
-    });
-
-    socket.on('clear-table', () => {
-        socket.broadcast.emit('clear-table'); // Limpa a tabela para todos
-    });
-
-    socket.on('disconnect', () => {
-        console.log('Usuário desconectado:', socket.id);
-    });
+// Rota principal apontando pro index.html (ou índice.html)
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'público', 'index.html'));
 });
 
-server.listen(3000, () => {
-    console.log('Servidor rodando em http://localhost:3000');
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Servidor rodando na porta ${port}`);
 });
