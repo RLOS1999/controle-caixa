@@ -10,12 +10,31 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background: linear-gradient(to right, red, orange);
+      background: url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
+    }
+
+    /* Camada de sobreposição para melhor legibilidade */
+    .overlay {
+      background: rgba(0, 0, 0, 0.5); /* Deixa o fundo mais escuro */
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    /* Conteúdo centralizado */
+    .content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
     }
 
     /* Título */
@@ -26,7 +45,7 @@
       text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
     }
 
-    /* Container dos botões/teclas */
+    /* Container dos botões */
     .button-container {
       display: flex;
       flex-direction: column;
@@ -65,18 +84,24 @@
   </style>
 </head>
 <body>
-  <h1>Controle de Caixa Comercial</h1>
 
-  <div class="button-container">
-    <!-- Botão que chama controle-caixa.html -->
-    <button class="btn-controle" id="btnControleCaixa">
-      Controle de Caixa
-    </button>
+  <!-- Camada de sobreposição -->
+  <div class="overlay"></div>
 
-    <!-- Botão opcional para sair -->
-    <button class="btn-sair" onclick="window.close()">
-      Sair
-    </button>
+  <div class="content">
+    <h1>Controle de Caixa Comercial</h1>
+
+    <div class="button-container">
+      <!-- Botão que chama controle-caixa.html -->
+      <button class="btn-controle" id="btnControleCaixa">
+        Controle de Caixa
+      </button>
+
+      <!-- Botão opcional para sair -->
+      <button class="btn-sair" onclick="window.close()">
+        Sair
+      </button>
+    </div>
   </div>
 
   <script>
@@ -85,5 +110,6 @@
       window.location.href = 'controle-caixa.html';
     });
   </script>
+
 </body>
 </html>
