@@ -10,7 +10,7 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background: url('https://raw.githubusercontent.com/SEU_USUARIO/SEU_REPOSITORIO/main/background.jpg') no-repeat center center fixed;
+      background: url('background.jpg') no-repeat center center fixed;
       background-size: cover;
       display: flex;
       flex-direction: column;
@@ -19,7 +19,7 @@
       height: 100vh;
     }
 
-    /* Camada de sobreposição para melhorar legibilidade */
+    /* Camada de sobreposição para melhor legibilidade */
     .overlay {
       background: rgba(0, 0, 0, 0.5); /* Deixa o fundo mais escuro */
       position: absolute;
@@ -30,7 +30,7 @@
       z-index: 0;
     }
 
-    /* Conteúdo */
+    /* Conteúdo centralizado */
     .content {
       position: relative;
       z-index: 1;
@@ -45,13 +45,14 @@
       text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
     }
 
-    /* Botões */
+    /* Container dos botões */
     .button-container {
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
 
+    /* Estilo base para botões */
     button {
       width: 200px;
       padding: 15px;
@@ -63,7 +64,7 @@
       transition: background-color 0.2s ease;
     }
 
-    /* Estilos dos botões */
+    /* Botão para ir ao Controle de Caixa */
     .btn-controle {
       background-color: white;
       color: red;
@@ -72,6 +73,7 @@
       background-color: #eee;
     }
 
+    /* Botão de sair (opcional) */
     .btn-sair {
       background-color: #900;
       color: white;
@@ -83,19 +85,19 @@
 </head>
 <body>
 
-  <!-- Sobreposição escura para melhor leitura -->
+  <!-- Camada de sobreposição -->
   <div class="overlay"></div>
 
   <div class="content">
     <h1>Controle de Caixa Comercial</h1>
 
     <div class="button-container">
-      <!-- Botão para ir ao Controle de Caixa -->
+      <!-- Botão que chama controle-caixa.html -->
       <button class="btn-controle" id="btnControleCaixa">
         Controle de Caixa
       </button>
 
-      <!-- Botão de Sair -->
+      <!-- Botão opcional para sair -->
       <button class="btn-sair" onclick="window.close()">
         Sair
       </button>
@@ -103,7 +105,7 @@
   </div>
 
   <script>
-    // Redireciona para a página controle-caixa.html
+    // Ao clicar no botão, redirecionar para "controle-caixa.html"
     document.getElementById('btnControleCaixa').addEventListener('click', function() {
       window.location.href = 'controle-caixa.html';
     });
